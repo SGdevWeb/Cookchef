@@ -31,6 +31,10 @@ function Homepage() {
         return () => (cancel = true);
     }, [BASE_URL_API]);
 
+    function updateRecipe(updatedRecipe) {
+        setRecipes(recipes.map((recipe) => recipe._id === updatedRecipe._id ? updatedRecipe : recipe))
+    }
+
     function handleInput(e) {
         const filter = e.target.value;
         setFilter(filter.trim().toLowerCase());
@@ -57,8 +61,8 @@ function Homepage() {
                         .map(recipe => (
                             <Recipe
                                 key={recipe._id} 
-                                title={recipe.title} 
-                                image={recipe.image}
+                                recipe={recipe}
+                                toggleLikedRecipe={updateRecipe}
                             />
                         ))}
                 </div>
