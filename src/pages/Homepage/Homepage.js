@@ -9,6 +9,7 @@ function Homepage() {
     const [recipes, setRecipes] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [filter, setFilter] = useState('');
+    const [page, setPage] = useState(1);
     const BASE_URL_API = useContext(ApiContext);
 
     useEffect(() => {
@@ -16,11 +17,11 @@ function Homepage() {
         async function fetchRecipes() {
             try {
                 setIsLoading(true);
-                const response = await fetch(BASE_URL_API);
+                const response = await fetch(`${BASE_URL_API}?skip=${ (page-1) * 9 }&limit=9`);
                 if (response.ok && !cancel) {
-                    const recipes = await response.json();
-                    setRecipes(Array.isArray(recipes) ? recipes : [recipes])
-               }   
+                    const newRecipes = await response.json();
+                    setRecipes(x => Array.isArray(newRecipes) ? [...x, ...newRecipes] : [newRecipes])
+                }   
             } catch (e) {
                 console.log('Erreur')
             } finally {
@@ -29,7 +30,7 @@ function Homepage() {
         }
         fetchRecipes();
         return () => (cancel = true);
-    }, [BASE_URL_API]);
+    }, [BASE_URL_API, page]);
 
     function updateRecipe(updatedRecipe) {
         setRecipes(recipes.map((recipe) => recipe._id === updatedRecipe._id ? updatedRecipe : recipe))
@@ -65,8 +66,11 @@ function Homepage() {
                                 toggleLikedRecipe={updateRecipe}
                             />
                         ))}
-                </div>
+                    </div>
                 )}
+                <div className='d-flex flex-row justify-content align-items p-20'>
+                    <button onClick={() => setPage(page + 1)} className='btn btn-primary'>Charger plus de recettes</button>
+                </div>
             </div>
         </div>
     );
