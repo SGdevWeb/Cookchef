@@ -18,7 +18,7 @@ function Homepage() {
         async function fetchRecipes() {
             try {
                 setIsLoading(true);
-                const response = await fetch(`${BASE_URL_API}?skip=${ (page-1) * 9 }&limit=9`);
+                const response = await fetch(`${BASE_URL_API}?skip=${ (page-1) * 9 }&limit=9&sort=createdAt:-1`);
                 if (response.ok && !cancel) {
                     const newRecipes = await response.json();
                     setRecipes(x => Array.isArray(newRecipes) ? [...x, ...newRecipes] : [newRecipes])
