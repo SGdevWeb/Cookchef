@@ -1,7 +1,7 @@
 import { dataWithoutId } from "./recipes";
 
 export async function seedRecipes() {
-    await fetch('https://restapi.fr/api/recipes',{
+    await fetch('https://restapi.fr/api/recipesSG',{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
